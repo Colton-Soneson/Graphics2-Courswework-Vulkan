@@ -34,9 +34,18 @@
 //	6) correctly transform input texture coordinate by atlas matrix
 
 layout (location = 0) in vec4 aPosition;
+layout (location = 8) in vec2 aTextureCoord;
+uniform mat4 uMVP;
+uniform mat2 uAtlas;
+
+layout (location = 0) out vec2 texCoord;
 
 void main()
 {
 	// DUMMY OUTPUT: directly assign input position to output position
-	gl_Position = aPosition;
+	
+	
+	texCoord = uAtlas * aTextureCoord;
+	
+	gl_Position = uMVP * aPosition;
 }
