@@ -51,7 +51,7 @@ void main()
 
 	//this is supposed to be the zvalue of the wave
 	float Gerstner = amplitude * sin( dot(waveDir, xy) * freq + (uTime * phase_constant));
-	vec2 gerstDir = clamp(max(0.0, Gerstner), 0, 1) * vTexcoord;
+	vec2 gerstDir = sin(clamp(max(0.0, Gerstner), 0, 1) * uTime) * vTexcoord;
 
 	rtFragColor = texture(uTex_dm, gerstDir);
 	

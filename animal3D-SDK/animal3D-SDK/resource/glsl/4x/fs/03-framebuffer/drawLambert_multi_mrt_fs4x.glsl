@@ -36,7 +36,7 @@
 uniform sampler2D uTex_dm;	//texture
 
 
-const float ambientStrength = 0.1f;
+const float ambientStrength = 0.0f;
 const int NUM_LIGHT = 4;	//or 3, check this, I think dan said there was 5 lights
 							//		make it so if the num of lights does not equal this (or is atleast greater) number here, then set the object to hot pink
 
@@ -59,6 +59,32 @@ layout(location = 6) out vec4 rtDiffuseTotal;
 //layout(location = 7) out vec4 rtSpecularTotal;
 
 //glsl requires you to forward declare just like c++, so functions go before main
+
+vec4 ambient(float a_strength, vec4 l_col);
+
+
+vec4 lambertLightRun(vec4 t_final);
+
+//test functions
+vec4 textureCoordTest(vec2 tc) { return vec4(tc, 0.0, 1.0); };
+vec4 viewNormsTest(vec4 mvNxN) { return mvNxN; };
+
+void main()
+{
+	
+	vec4 t_final_dm = texture(uTex_dm, vTexcoord);
+	rtFragColor = lambertLightRun(t_final_dm);
+	rtViewPosition = vMV_pos;
+	rtAtlasTexcoord = vec4(vTexcoord, 0.0, 1.0);
+	rtDiffuseMap = vec4(t_final_dm.rgb, 1.0);
+
+
+	//testing
+	//rtFragColor = textureCoordTest(vTexcoord);
+	//rtFragColor = viewNormsTest(vMV_nrm_by_nrm);
+	//rtFragColor = texture(uTex_dm, vTexcoord);
+}
+
 
 vec4 ambient(float a_strength, vec4 l_col)
 {
@@ -84,7 +110,7 @@ vec4 lambertLightRun(vec4 t_final)
 	else
 	{
 		vec4 N = normalize(vMV_nrm_by_nrm);
-		rtViewNormal = N;
+		rtViewNormal = vec4(N.xyz, 1.0);
 
 		vec4 diffuseTotal = vec4(0.0,0.0,0.0,0.0);
 
@@ -95,7 +121,7 @@ vec4 lambertLightRun(vec4 t_final)
 			vec4 diffuse = vec4(diff * uLightCol[i]);
 			vec4 amb = ambient(ambientStrength, uLightCol[i]);
 
-			diffuseTotal += (diff * t_final);
+			diffuseTotal += (diff);
 
 			temp += (amb + diffuse) * t_final;
 		}
@@ -104,23 +130,3 @@ vec4 lambertLightRun(vec4 t_final)
 		return temp;
 	}
 };
-
-//test functions
-vec4 textureCoordTest(vec2 tc) { return vec4(tc, 0.0, 1.0); };
-vec4 viewNormsTest(vec4 mvNxN) { return mvNxN; };
-
-void main()
-{
-	
-	vec4 t_final_dm = texture(uTex_dm, vTexcoord);
-	rtFragColor = lambertLightRun(t_final_dm);
-	rtViewPosition = vMV_pos;
-	rtAtlasTexcoord = vec4(vTexcoord, 0.0, 1.0);
-	rtDiffuseMap = vec4(t_final_dm.rgb, 1.0);
-
-
-	//testing
-	//rtFragColor = textureCoordTest(vTexcoord);
-	//rtFragColor = viewNormsTest(vMV_nrm_by_nrm);
-	//rtFragColor = texture(uTex_dm, vTexcoord);
-}

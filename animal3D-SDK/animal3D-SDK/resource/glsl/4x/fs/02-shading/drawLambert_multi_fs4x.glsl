@@ -34,7 +34,7 @@
 uniform sampler2D uTex_dm;	//texture
 
 
-const float ambientStrength = 0.1f;
+const float ambientStrength = 0.0f;
 const int NUM_LIGHT = 4;	//or 3, check this, I think dan said there was 5 lights
 							//		make it so if the num of lights does not equal this (or is atleast greater) number here, then set the object to hot pink
 
