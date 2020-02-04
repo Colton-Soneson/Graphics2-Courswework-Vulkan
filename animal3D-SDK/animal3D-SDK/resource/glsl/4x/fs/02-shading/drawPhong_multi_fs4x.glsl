@@ -31,10 +31,89 @@
 //	4) implement Phong shading model
 //	Note: test all data and inbound values before using them!
 
+uniform sampler2D uTex_dm;	//diffuse map
+uniform sampler2D uTex_sm;	//spec map
+
+const float ambientStrength = 0.1f;
+const int shine = 4;		//2 to the power of this number
+const int NUM_LIGHT = 4;	//or 3, check this, I think dan said there was 5 lights
+							//		make it so if the num of lights does not equal this (or is atleast greater) number here, then set the object to hot pink
+
+//line 86 DemoShaderProgram.h, light uniform names location
+uniform int uLightCt;		//not float, use for num of lights
+uniform vec4 uLightPos[NUM_LIGHT];
+uniform vec4 uLightCol[NUM_LIGHT];
+
+in vec2 vTexcoord;
+in vec4 vMV_nrm_by_nrm;
+in vec4 vMV_pos;
 out vec4 rtFragColor;
+
+//i like to leave ambient as a seperate function because it doesnt have many dependencies to work,
+//	its basic enough to just understand if the objects appear in the scene
+vec4 ambient(float a_strength, vec4 l_col)
+{
+	if(NUM_LIGHT < uLightCt)
+	{
+		return vec4(1.0, 0.15, 0.0, 1.0);	//dont waste time doing lighting we cant do
+	}
+	else
+	{
+		return vec4(a_strength * l_col);
+	}
+} 
+
+
+vec4 phongLightRun(vec4 t_final_dm, vec4 t_final_sm)
+{
+	vec4 temp;
+	
+	if(NUM_LIGHT < uLightCt)
+	{
+		return vec4(1.0, 0.15, 0.0, 1.0);	
+	}
+	else
+	{
+		for(int i = 0; i < uLightCt; i++)
+		{
+			vec4 L = normalize(uLightPos[i] - vMV_pos);
+			vec4 N = normalize(vMV_nrm_by_nrm);
+			vec4 V = normalize(vMV_pos);					//view vector from eye to the point we are looking at
+			vec4 R = reflect(-L, N);						//lD is negative because its pointing FROM light source, in current state it points towards it
+
+			vec4 amb = ambient(ambientStrength, uLightCol[i]);
+
+			float diff = max(0.0, dot(N, L));
+			vec4 diffuse = vec4((diff * t_final_dm) * uLightCol[i]);
+
+			float spec = max(0.0, dot(V, R));
+			for(int i = 0; i < shine; i++)
+			{
+				spec *= spec;
+			}
+			vec4 specular = vec4((spec * t_final_sm) * uLightCol[i]);
+
+			temp += (amb + diffuse + specular);
+		}
+
+		return temp;
+	}
+	
+};
+
+//test functions
+vec4 textureCoordTest(vec2 tc) { return vec4(tc, 0.0, 1.0); };
+vec4 viewNormsTest(vec4 mvNxN) { return mvNxN; };
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE GREEN
-	rtFragColor = vec4(0.0, 1.0, 0.0, 1.0);
+	
+	vec4 t_final_dm = texture(uTex_dm, vTexcoord);
+	vec4 t_final_sm = texture(uTex_sm, vTexcoord);
+	rtFragColor = phongLightRun(t_final_dm, t_final_sm);	
+	
+	//testing
+	//rtFragColor = textureCoordTest(vTexcoord);
+	//rtFragColor = viewNormsTest(vMV_nrm_by_nrm);
+	//rtFragColor = texture(uTex_dm, vTexcoord);
 }
