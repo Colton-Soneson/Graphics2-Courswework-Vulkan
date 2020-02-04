@@ -32,7 +32,7 @@
 //	5) assign sample to output color
 
 uniform sampler2D uTex_dm;
-uniform float uTime;
+uniform double uTime;
 
 in vec2 vTexcoord;
 
@@ -50,10 +50,11 @@ void main()
 	vec2 xy = vec2(1, 1);
 
 	//this is supposed to be the zvalue of the wave
-	float Gerstner = amplitude * sin( dot(waveDir, xy) * freq + (uTime * phase_constant));
-	vec2 gerstDir = sin(clamp(max(0.0, Gerstner), 0, 1) * uTime) * vTexcoord;
+	//float Gerstner = amplitude * sin( dot(waveDir, xy) * freq + (uTime * phase_constant));
+	//vec2 gerstDir = sin(clamp(max(0.0, Gerstner), 0, 1) * uTime) * vTexcoord;
 
-	rtFragColor = texture(uTex_dm, gerstDir);
-	
+	//rtFragColor = texture(uTex_dm, gerstDir);
+	vec2 temp = vec2((sin(float(uTime * speed)) * freq) * vTexcoord.x, vTexcoord.y + abs(sin(float(uTime * speed))));
+	rtFragColor = texture(uTex_dm, temp);
 
 }

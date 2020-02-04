@@ -32,7 +32,7 @@
 //	5) assign modified sample to output color
 
 uniform sampler2D uTex_dm;
-uniform float uTime;
+uniform double uTime;
 
 in vec2 vTexcoord;
 
@@ -42,9 +42,10 @@ void main()
 {
 	// attempting to do a classic shadertoy manuever, (BASED ON SHADERTOY NEW SCREEN)
 	vec2 estimatedRes = vec2(960, 540);
-	vec2 uv = vTexcoord / estimatedRes;
-	vec3 col = 0.5 + 0.5 * cos(uTime + uv.xyx + vec3(0, 2, 4));
-	rtFragColor = vec4(texture(uTex_dm, vTexcoord)) * vec4(col, 1.0);
+	vec2 uv = vTexcoord.xy / estimatedRes.xy;
+	vec3 col = 0.5 + 0.5 * cos(float(uTime) + uv.xyx + vec3(0, 2, 4));
+	col *= texture(uTex_dm, vTexcoord).xyz;
+	rtFragColor = vec4(col, 1.0);
 
 
 }
