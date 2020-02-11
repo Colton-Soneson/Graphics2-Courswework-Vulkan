@@ -34,6 +34,39 @@ uniform sampler2D uImage00;
 
 layout (location = 0) out vec4 rtFragColor;
 
+//number indicates which row of the triangle the weights are coming from
+vec4 blurGaussian0(in sampler2D img, in vec2 centerCoord, in vec2 directionToBlur)		
+{
+	return texture(img, centerCoord);
+}
+
+//directionToBlur is not a unit vector
+vec4 blurGaussian1(in sampler2D img, in vec2 centerCoord, in vec2 directionToBlur)		
+{
+	//pascal row 3
+	//	1 2 1
+
+	vec4 c = vec4(0.0);
+	c += texture(img, centerCoord) * 2.0;
+	c += texture(img, centerCoord + directionToBlur) * 1.0;
+	c += texture(img, centerCoord - directionToBlur) * 1.0;
+	return (c * 0.25);	// c / 4	as you get larger kernel, you expand this power of two
+}
+
+vec4 blurGaussian2(in sampler2D img, in vec2 centerCoord, in vec2 directionToBlur)		
+{
+	//pascal row 5
+	//	1 4 6 4 1
+
+	vec4 c = vec4(0.0);
+	c += texture(img, centerCoord) * 6.0;
+	c += texture(img, centerCoord + directionToBlur) * 4.0;
+	c += texture(img, centerCoord + directionToBlur) * 1.0;
+	c += texture(img, centerCoord - directionToBlur) * 4.0;
+	c += texture(img, centerCoord - directionToBlur) * 1.0;
+	return (c * 0.125);	// c / 8	
+}
+
 void main()
 {
 	// DUMMY OUTPUT: all fragments are OPAQUE MAGENTA
