@@ -36,6 +36,5 @@ layout (location = 0) in vec4 aPosition;
 
 void main()
 {
-	// DUMMY OUTPUT: directly assign input position to output position
 	gl_Position = aPosition;
 }
