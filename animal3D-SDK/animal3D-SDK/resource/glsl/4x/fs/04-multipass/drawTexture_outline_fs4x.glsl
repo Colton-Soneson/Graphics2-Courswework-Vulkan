@@ -27,11 +27,32 @@
 // ****TO-DO: 
 //	0) copy existing texturing shader
 //	1) implement outline algorithm - see render code for uniform hints
+const float thickness = 0.1;
+
+uniform sampler2D uTex_dm;
+
+in vec2 vTexcoord;
+in vec4 vMV_nrm_by_nrm;
+in vec4 vMV_pos;
 
 out vec4 rtFragColor;
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE DARK GREY
-	rtFragColor = vec4(0.2, 0.2, 0.2, 1.0);
+	//this is just going to end up being like a version of cell shading
+	//	but in this case we only want one angle
+	//	we want the angle closest to 90 degrees from eye view v normal on fragment post_depth_coverage
+
+	vec4 V = normalize(vMV_pos);	//view vector from eye to the point we are looking at
+	vec4 N = normalize(vMV_nrm_by_nrm);
+
+	if(dot(V, N) < thickness)
+	{
+		rtFragColor = texture(uTex_dm, vTexcoord) * 0.1f;	//just make it darker
+	}
+	else
+	{
+		rtFragColor = texture(uTex_dm, vTexcoord);
+	}
+
 }
