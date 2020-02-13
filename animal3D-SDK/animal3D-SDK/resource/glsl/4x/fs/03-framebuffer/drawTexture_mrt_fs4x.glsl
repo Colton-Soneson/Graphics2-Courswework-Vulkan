@@ -31,10 +31,32 @@
 //	4) assign sample to output render target (location 0)
 //	5) declare new render target (location 3) and output texcoord
 
-out vec4 rtFragColor;
+uniform sampler2D uTex_dm;
+
+in vec2 vTexcoord;
+in vec4 vMV_nrm_by_nrm;	
+in vec4 vMV_pos;
+
+//remember, first hit ">" then cycle using "}" and thats where these come from
+layout(location = 0) out vec4 rtFragColor;
+layout(location = 1) out vec4 rtViewPosition;
+layout(location = 2) out vec4 rtViewNormal;
+layout(location = 3) out vec4 rtAtlasTexcoord;
+layout(location = 4) out vec4 rtDiffuseMap;			
+//layout(location = 5) out vec4 rtSpecularMap;
+//layout(location = 6) out vec4 rtDiffuseTotal;
+//layout(location = 7) out vec4 rtSpecularTotal;
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE WHITE
-	rtFragColor = vec4(1.0, 1.0, 1.0, 1.0);
+	vec4 t_final = texture(uTex_dm, vTexcoord);
+	vec4 N = normalize(vMV_nrm_by_nrm);
+
+	rtFragColor = t_final;
+	rtViewPosition = vMV_pos;
+	rtViewNormal = N;
+	rtAtlasTexcoord = vec4(vTexcoord, 0.0, 1.0);
+	//rtDiffuseMap = vec4(uTex_dm.xy, 0.0, 1.0);	//cant get this
+	rtDiffuseMap = vec4(t_final.rgb, 1.0);	
+
 }

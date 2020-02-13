@@ -38,10 +38,25 @@
 //	10+) see instructions in passTexcoord...vs4x.glsl for information on 
 //		how to handle the texture coordinate
 
+uniform mat4 uMVP;
+uniform mat4 uAtlas;
+uniform mat4 uMV;
+uniform mat4 uMV_nrm;	//model view for normals, ask dan if this is just (view * model) * normalMap
+uniform mat4 uP;		//find necessity of this
+
 layout (location = 0) in vec4 aPosition;
+layout (location = 2) in vec4 aNormal;
+layout (location = 8) in vec4 aTexcoord;
+
+out vec2 vTexcoord;
+out vec4 vMV_nrm_by_nrm;	//find better name that isnt outnorm / ask for standard naming convention
+out vec4 vMV_pos;
 
 void main()
 {
-	// DUMMY OUTPUT: directly assign input position to output position
-	gl_Position = aPosition;
+	vMV_nrm_by_nrm = uMV_nrm * aNormal;
+	vMV_pos = uMV * aPosition;
+	vTexcoord = vec2(uAtlas * aTexcoord);
+	//gl_Position = uMVP * aPosition;	//why the hell does this need to be uP * vMV_pos? the math is the exact same as uMVP * aPosition
+	gl_Position = uP * vMV_pos;			//why
 }

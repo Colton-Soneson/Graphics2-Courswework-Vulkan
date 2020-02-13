@@ -26,9 +26,10 @@
 
 #define MAX_INSTANCES 1024
 
+uniform mat4 uMVP;
 layout (location = 0) in vec4 aPosition;
 
 void main()
 {
-	gl_Position = aPosition;
+	gl_Position = uMVP * aPosition;
 }
