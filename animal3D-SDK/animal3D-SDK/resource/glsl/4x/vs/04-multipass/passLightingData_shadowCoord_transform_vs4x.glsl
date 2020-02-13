@@ -37,7 +37,7 @@ uniform mat4 uAtlas;
 uniform mat4 uMV;
 uniform mat4 uMV_nrm;	//model view for normals, ask dan if this is just (view * model) * normalMap
 uniform mat4 uP;		//find necessity of this
-uniform mat4 uMVPB_other;	//use "other" because we have to transform the vertex pos into light screen space, not just object
+uniform mat4 uMVPB_other;	//use "other" because we have to transform the vertex pos into light screen space, not on the object itself
 
 layout (location = 0) in vec4 aPosition;
 layout (location = 2) in vec4 aNormal;

@@ -41,5 +41,5 @@ out vec4 vCol;
 void main()
 {
 	vCol = aColor;
-	gl_Position = aPosition;
+	gl_Position = uMVP * aPosition;
 }
