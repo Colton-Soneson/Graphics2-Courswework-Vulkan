@@ -33,10 +33,24 @@
 //	5) declare texture coordinate outbound varying
 //	6) correctly transform input texture coordinate by atlas matrix
 
+uniform mat4 uMVP;
+uniform mat4 uAtlas;
+uniform mat4 uMV;
+uniform mat4 uMV_nrm;	//model view for normals, ask dan if this is just (view * model) * normalMap
+
 layout (location = 0) in vec4 aPosition;
+layout (location = 2) in vec4 aNormal;
+layout (location = 8) in vec4 aTexcoord;
+
+out vec2 vTexcoord;
+out vec4 vMV_nrm_by_nrm;	//find better name that isnt outnorm / ask for standard naming convention
+out vec4 vMV_pos;
 
 void main()
 {
 	// DUMMY OUTPUT: directly assign input position to output position
-	gl_Position = aPosition;
+	vMV_nrm_by_nrm = uMV_nrm * aNormal;
+	vMV_pos = uMV * aPosition;
+	vTexcoord = vec2(uAtlas * aTexcoord);
+	gl_Position = uMVP * aPosition;
 }

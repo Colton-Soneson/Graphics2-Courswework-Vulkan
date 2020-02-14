@@ -31,10 +31,30 @@
 //	4) sample texture using modified texture coordinate
 //	5) assign sample to output color
 
+uniform sampler2D uTex_dm;
+uniform double uTime;
+
+in vec2 vTexcoord;
+
 out vec4 rtFragColor;
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE DARK GREY
-	rtFragColor = vec4(0.2, 0.2, 0.2, 1.0);
+	//my 2D attempt at the gerstner wave equation (not even gonna be possible)
+	float amplitude = 0.12f;
+	float wavelength = 0.4f;
+	float freq = 2 / wavelength;
+	float speed = 0.5;
+	float phase_constant = speed * wavelength;
+	vec2 waveDir = vec2(0.5, 0.75);
+	vec2 xy = vec2(1, 1);
+
+	//this is supposed to be the zvalue of the wave
+	//float Gerstner = amplitude * sin( dot(waveDir, xy) * freq + (uTime * phase_constant));
+	//vec2 gerstDir = sin(clamp(max(0.0, Gerstner), 0, 1) * uTime) * vTexcoord;
+
+	//rtFragColor = texture(uTex_dm, gerstDir);
+	vec2 temp = vec2((sin(float(uTime * speed)) * freq) * vTexcoord.x, vTexcoord.y + abs(sin(float(uTime * speed))));
+	rtFragColor = texture(uTex_dm, temp);
+
 }

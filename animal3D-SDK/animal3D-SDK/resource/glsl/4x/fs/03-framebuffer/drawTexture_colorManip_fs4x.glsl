@@ -31,10 +31,21 @@
 //	4) modify sample in some creative way
 //	5) assign modified sample to output color
 
+uniform sampler2D uTex_dm;
+uniform double uTime;
+
+in vec2 vTexcoord;
+
 out vec4 rtFragColor;
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE LIGHT GREY
-	rtFragColor = vec4(0.5, 0.5, 0.5, 1.0);
+	// attempting to do a classic shadertoy manuever, (BASED ON SHADERTOY NEW SCREEN)
+	vec2 estimatedRes = vec2(960, 540);
+	vec2 uv = vTexcoord.xy / estimatedRes.xy;
+	vec3 col = 0.5 + 0.5 * cos(float(uTime) + uv.xyx + vec3(0, 2, 4));
+	col *= texture(uTex_dm, vTexcoord).xyz;
+	rtFragColor = vec4(col, 1.0);
+
+
 }

@@ -31,10 +31,15 @@
 //	4) declare varying to pass color input to fragment shader
 //	5) assign vertex color input to varying
 
+uniform mat4 uMVP;
+
 layout (location = 0) in vec4 aPosition;
+layout (location = 3) in vec4 aColor;
+
+out vec4 vCol;
 
 void main()
 {
-	// DUMMY OUTPUT: directly assign input position to output position
-	gl_Position = aPosition;
+	vCol = aColor;
+	gl_Position = uMVP * aPosition;
 }
