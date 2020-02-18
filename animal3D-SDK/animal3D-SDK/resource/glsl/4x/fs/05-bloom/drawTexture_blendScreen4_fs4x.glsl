@@ -48,7 +48,7 @@ void main()
 	vec4 D = texture(uImage03, vTexcoord);
 
 	//slide 32
-	//rtFragColor = 1.0 - (1.0 - A) * (1.0 - B) * (1.0 - C) * (1.0 - D);
-	rtFragColor = vec4(1.0,1.0,1.0,1.0);
+	rtFragColor = 1.0 - (1.0 - A) * (1.0 - B) * (1.0 - C) * (1.0 - D);
+	//rtFragColor = vec4(1.0,1.0,1.0,1.0);
 
 }

@@ -69,13 +69,13 @@ vec4 blurGaussian2(in sampler2D img, in vec2 centerCoord, in vec2 directionToBlu
 	c += texture(img, centerCoord + directionToBlur) * 1.0;
 	c += texture(img, centerCoord - directionToBlur) * 4.0;
 	c += texture(img, centerCoord - directionToBlur) * 1.0;
-	return (c * 0.125);	// c / 8	
+	return (c * 0.0625);	//this number was way wrong, its 1/16 NOT 1/8
 }
 
 void main()
 {
-	vec2 texUnits = 1.0 / textureSize(uImage00, 0);
+	//vec2 texUnits = 1.0 / textureSize(uImage00, 0);
 
-	rtFragColor = vec4(1.0,1.0,1.0,1.0);
-	//rtFragColor = blurGaussian2(uImage00, vTexcoord, uAxis * uSize * 2.0);
+	//rtFragColor = vec4(1.0,1.0,1.0,1.0);
+	rtFragColor = blurGaussian1(uImage00, vTexcoord, uAxis * uSize);
 }

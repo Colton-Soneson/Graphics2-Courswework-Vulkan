@@ -45,7 +45,6 @@ float relativeLuminance(vec3 col)
 void main()
 {
 	float luminance = relativeLuminance(texture(uImage00, vTexcoord).rgb);
-	//rtFragColor = vec4(texture(uImage00, vTexcoord).rgb * luminance, 1.0);	//slide 14 says to multiply
-	rtFragColor = vec4(1.0,1.0,1.0,1.0);
-
+	rtFragColor = vec4(texture(uImage00, vTexcoord).rgb * luminance, 1.0);	//slide 14 says to multiply
+	//rtFragColor = vec4(1.0,1.0,1.0,1.0);
 }
