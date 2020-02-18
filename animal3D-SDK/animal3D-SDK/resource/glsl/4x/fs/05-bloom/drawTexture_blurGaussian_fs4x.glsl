@@ -30,7 +30,12 @@
 //	2) implement Gaussian blur function using a 1D kernel (hint: Pascal's triangle)
 //	3) sample texture using Gaussian blur function and output result
 
+
 uniform sampler2D uImage00;
+uniform vec2 uAxis;		//we set this in idle-renderer.c
+uniform vec2 uSize;		//we set this in idle-renderer.c
+
+in vec2 vTexcoord;
 
 layout (location = 0) out vec4 rtFragColor;
 
@@ -69,6 +74,8 @@ vec4 blurGaussian2(in sampler2D img, in vec2 centerCoord, in vec2 directionToBlu
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE MAGENTA
-	rtFragColor = vec4(1.0, 0.0, 1.0, 1.0);
+	vec2 texUnits = 1.0 / textureSize(uImage00, 0);
+
+	rtFragColor = vec4(1.0,1.0,1.0,1.0);
+	//rtFragColor = blurGaussian2(uImage00, vTexcoord, uAxis * uSize * 2.0);
 }

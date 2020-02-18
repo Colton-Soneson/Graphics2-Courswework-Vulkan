@@ -31,11 +31,24 @@
 //	3) use screen function to sample input textures
 
 uniform sampler2D uImage00;
+uniform sampler2D uImage01;
+uniform sampler2D uImage02;
+uniform sampler2D uImage03;
+
+in vec2 vTexcoord;
 
 layout (location = 0) out vec4 rtFragColor;
 
 void main()
 {
 	// DUMMY OUTPUT: all fragments are OPAQUE YELLOW
-	rtFragColor = vec4(1.0, 1.0, 0.0, 1.0);
+	vec4 A = texture(uImage00, vTexcoord);
+	vec4 B = texture(uImage01, vTexcoord);
+	vec4 C = texture(uImage02, vTexcoord);
+	vec4 D = texture(uImage03, vTexcoord);
+
+	//slide 32
+	//rtFragColor = 1.0 - (1.0 - A) * (1.0 - B) * (1.0 - C) * (1.0 - D);
+	rtFragColor = vec4(1.0,1.0,1.0,1.0);
+
 }
