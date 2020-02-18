@@ -564,23 +564,9 @@ void a3pipelines_render(a3_DemoState const* demoState, a3_Demo_Pipelines const* 
 	currentWriteFBO = writeFBO[currentPass];
 	currentReadFBO = readFBO[currentPass][0];
 	a3framebufferActivate(currentWriteFBO);
-	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 3);		//i think the colorTarget should be 3 purely because the color attrib is location 3
-	a3vertexDrawableRenderActive();
-	
-	currentPass = pipelines_passBlurH_4;
-	currentWriteFBO = writeFBO[currentPass];
-	currentReadFBO = readFBO[currentPass][1];
-	a3framebufferActivate(currentWriteFBO);
-	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 3);
+	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 0);		//i think the colorTarget should be 3 purely because the color attrib is location 3
 	a3vertexDrawableRenderActive();
 
-	currentPass = pipelines_passBlurH_8;
-	currentWriteFBO = writeFBO[currentPass];
-	currentReadFBO = readFBO[currentPass][2];
-	a3framebufferActivate(currentWriteFBO);
-	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 3);
-	a3vertexDrawableRenderActive();
-	
 
 	// ****TO-DO: 
 	//	-> 3.1c: repeat previous pass but using vertical axis
@@ -591,22 +577,10 @@ void a3pipelines_render(a3_DemoState const* demoState, a3_Demo_Pipelines const* 
 	currentWriteFBO = writeFBO[currentPass];
 	currentReadFBO = readFBO[currentPass][0];
 	a3framebufferActivate(currentWriteFBO);
-	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 3);
+	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 0);
 	a3vertexDrawableRenderActive();
 	
-	currentPass = pipelines_passBlurV_4;
-	currentWriteFBO = writeFBO[currentPass];
-	currentReadFBO = readFBO[currentPass][1];
-	a3framebufferActivate(currentWriteFBO);
-	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 3);
-	a3vertexDrawableRenderActive();
 
-	currentPass = pipelines_passBlurV_8;
-	currentWriteFBO = writeFBO[currentPass];
-	currentReadFBO = readFBO[currentPass][2];
-	a3framebufferActivate(currentWriteFBO);
-	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 3);
-	a3vertexDrawableRenderActive();
 	
 	
 
@@ -614,17 +588,47 @@ void a3pipelines_render(a3_DemoState const* demoState, a3_Demo_Pipelines const* 
 	//	-> 4.1f: repeat bright pass and blur passes on smaller FBOs
 	currentPass = pipelines_passBright_4;
 	currentWriteFBO = writeFBO[currentPass];
-	currentReadFBO = readFBO[currentPass][1];
+	currentReadFBO = readFBO[currentPass - 1][0];
 	a3framebufferActivate(currentWriteFBO);
-	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 3);
+	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 0);
 	a3vertexDrawableRenderActive();
+
+	currentPass = pipelines_passBlurV_4;
+	currentWriteFBO = writeFBO[currentPass];
+	currentReadFBO = readFBO[currentPass - 1][0];
+	a3framebufferActivate(currentWriteFBO);
+	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 0);
+	a3vertexDrawableRenderActive();
+
+	currentPass = pipelines_passBlurH_4;
+	currentWriteFBO = writeFBO[currentPass];
+	currentReadFBO = readFBO[currentPass - 1][0];
+	a3framebufferActivate(currentWriteFBO);
+	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 0);
+	a3vertexDrawableRenderActive();
+
 
 	currentPass = pipelines_passBright_8;
 	currentWriteFBO = writeFBO[currentPass];
-	currentReadFBO = readFBO[currentPass][2];
+	currentReadFBO = readFBO[currentPass - 2][0];
 	a3framebufferActivate(currentWriteFBO);
-	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 3);
+	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 0);
 	a3vertexDrawableRenderActive();
+
+	currentPass = pipelines_passBlurV_8;				//THIS DOESNT WORK BECAUSE THE STUPID FUNCTION WONT ACCEPT the c16_8f arguements
+	currentWriteFBO = writeFBO[currentPass];
+	currentReadFBO = readFBO[currentPass - 2][0];
+	a3framebufferActivate(currentWriteFBO);
+	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 0);
+	a3vertexDrawableRenderActive();
+
+	currentPass = pipelines_passBlurH_8;
+	currentWriteFBO = writeFBO[currentPass];
+	currentReadFBO = readFBO[currentPass - 2][0];
+	a3framebufferActivate(currentWriteFBO);
+	a3framebufferBindColorTexture(currentReadFBO, a3tex_unit00, 0);
+	a3vertexDrawableRenderActive();
+
 
 	// bloom composite
 	currentDemoProgram = demoState->prog_drawTexture_blendScreen4;
@@ -634,7 +638,7 @@ void a3pipelines_render(a3_DemoState const* demoState, a3_Demo_Pipelines const* 
 	currentWriteFBO = writeFBO[currentPass];
 	a3framebufferActivate(currentWriteFBO);
 	for (i = 0, j = 4; i < j; ++i)
-		a3framebufferBindColorTexture(readFBO[currentPass][i], a3tex_unit00 + i, 3);
+		a3framebufferBindColorTexture(readFBO[currentPass][i], a3tex_unit00 + i, 0);
 	a3vertexDrawableRenderActive();
 
 

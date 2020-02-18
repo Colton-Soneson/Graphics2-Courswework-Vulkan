@@ -64,7 +64,7 @@ void main()
 	vec3 result = vec3(1.0) - (vec3(1.0) - original);
 	//vec3 result = vec3(1.0) - exp(-original * 0.5);
 
-	result = pow(result, vec3(1.0 / 2.2));
+	//result = pow(result, vec3(1.0 / 2.2));
 
 	rtFragColor = vec4(result, 1.0);
 	//rtFragColor = vOriginal;

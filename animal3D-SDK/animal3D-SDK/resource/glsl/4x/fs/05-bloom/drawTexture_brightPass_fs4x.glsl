@@ -47,5 +47,15 @@ void main()
 	float luminance = relativeLuminance(texture(uImage00, vTexcoord).rgb);
 	vec3 Vin = texture(uImage00, vTexcoord).rgb * luminance;
 	vec3 result = Vin / (Vin + vec3(1.0));		//https://en.wikipedia.org/wiki/Tone_mapping
+	
+	//vec3 result = texture(uImage00, vTexcoord).rgb;
+
+	//result *= 0.18 / ( luminance );
+	//result *= (1.0 + (result / (0.8 * 0.8)));
+	//result -= 5.0;
+
+	//result = max(result, 0.0);
+	//result /= (10.0 + result);
+
 	rtFragColor = vec4(result, 1.0);	//slide 14 says to multiply
 }
