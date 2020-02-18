@@ -36,6 +36,8 @@ layout (location = 3) out vec4 rtAtlasTexcoord;
 
 void main()
 {
+	//recieve data from vertex shader varying block, transform data correctly
+
 	// DUMMY OUTPUT: all fragments are OPAQUE RED, GREEN AND BLUE
 	rtViewPosition = vec4(1.0, 0.0, 0.0, 1.0);
 	rtViewNormal = vec4(0.0, 1.0, 0.0, 1.0);
