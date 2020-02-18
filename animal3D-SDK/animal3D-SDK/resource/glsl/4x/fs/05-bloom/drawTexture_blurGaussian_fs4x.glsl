@@ -77,5 +77,5 @@ void main()
 	//vec2 texUnits = 1.0 / textureSize(uImage00, 0);
 
 	//rtFragColor = vec4(1.0,1.0,1.0,1.0);
-	rtFragColor = blurGaussian1(uImage00, vTexcoord, uAxis * uSize);
+	rtFragColor = blurGaussian2(uImage00, vTexcoord, uAxis * uSize);
 }

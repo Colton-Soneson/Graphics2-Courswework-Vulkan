@@ -37,6 +37,7 @@ layout (location = 0) in vec4 aPosition;
 layout (location = 3) in vec4 aColor;
 
 out vec4 vCol;
+out vec4 vOriginal;
 
 void main()
 {

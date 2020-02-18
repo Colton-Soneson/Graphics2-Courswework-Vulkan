@@ -43,6 +43,8 @@ uniform mat4 uAtlas;
 uniform mat4 uMV;
 uniform mat4 uMV_nrm;	//model view for normals, ask dan if this is just (view * model) * normalMap
 uniform mat4 uP;		//find necessity of this
+uniform sampler2D uImage00;
+
 
 layout (location = 0) in vec4 aPosition;
 layout (location = 2) in vec4 aNormal;
@@ -51,6 +53,8 @@ layout (location = 8) in vec4 aTexcoord;
 out vec2 vTexcoord;
 out vec4 vMV_nrm_by_nrm;	//find better name that isnt outnorm / ask for standard naming convention
 out vec4 vMV_pos;
+out vec4 vOriginal;
+
 
 void main()
 {
@@ -59,4 +63,6 @@ void main()
 	vTexcoord = vec2(uAtlas * aTexcoord);
 	//gl_Position = uMVP * aPosition;	//why the hell does this need to be uP * vMV_pos? the math is the exact same as uMVP * aPosition
 	gl_Position = uP * vMV_pos;			//why
+	vOriginal = texture(uImage00, vTexcoord);
+
 }
