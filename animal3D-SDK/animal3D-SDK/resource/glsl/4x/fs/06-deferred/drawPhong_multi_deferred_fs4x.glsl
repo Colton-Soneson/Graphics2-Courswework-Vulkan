@@ -30,7 +30,7 @@
 // ****TO-DO: 
 //	0) copy original forward Phong shader
 //	1) declare g-buffer textures as uniform samplers
-//	2) declare light data as uniform block
+//	2) declare light data as uniform block [FALSE DONT DO THIS JUST USE EXACT SAME LIGHTING WE HAD FOR UNIFORM PHONG SHADER, COPY OG PHONG THEN REPLACE ANY VARYING INPUT WITH A TEXTURE SAMPLE]
 //	3) replace geometric information normally received from fragment shader 
 //		with samples from respective g-buffer textures; use to compute lighting
 //			-> position calculated using reverse perspective divide; requires 
@@ -48,6 +48,8 @@ layout (location = 7) out vec4 rtSpecularLightTotal;
 
 void main()
 {
+	
+	
 	// DUMMY OUTPUT: all fragments are OPAQUE CYAN (and others)
 	rtFragColor = vec4(0.0, 1.0, 1.0, 1.0);
 	rtDiffuseMapSample = vec4(0.0, 0.0, 1.0, 1.0);
