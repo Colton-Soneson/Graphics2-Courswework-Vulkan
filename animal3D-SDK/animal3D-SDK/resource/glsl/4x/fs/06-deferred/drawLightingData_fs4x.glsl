@@ -39,7 +39,8 @@ void main()
 	//recieve data from vertex shader varying block, transform data correctly
 
 	// DUMMY OUTPUT: all fragments are OPAQUE RED, GREEN AND BLUE
-	rtViewPosition = vec4(1.0, 0.0, 0.0, 1.0);
-	rtViewNormal = vec4(0.0, 1.0, 0.0, 1.0);
-	rtAtlasTexcoord = vec4(0.0, 0.0, 1.0, 1.0);
+	rtViewPosition = vec4(1.0, 0.0, 0.0, 1.0);		//use biad clip coord perspective divide stuff, what removes bias and brings back to clip space is perspective divide 
+													// bias clip coord looks bluey purpley
+	rtViewNormal = vec4(0.0, 1.0, 0.0, 1.0);		// ( * 1/2 ) + 1/2   to get to 0 to 1,   to bring it back out of gbuffer do ( * 2) - 1
+	rtAtlasTexcoord = vec4(0.0, 0.0, 1.0, 1.0);		
 }

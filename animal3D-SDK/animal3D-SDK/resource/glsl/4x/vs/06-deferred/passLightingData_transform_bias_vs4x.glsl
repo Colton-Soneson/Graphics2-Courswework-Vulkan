@@ -46,6 +46,7 @@ void main()
 	vViewPosition = uMV * aPosition;
 	vViewNormal = uMV_nrm * aNormal;
 	vTexcoord = uAtlas * aTexcoord;
-	vBiasedClipCoord = uPB * vViewPosition;
+	vBiasedClipCoord = uPB * vViewPosition;	//use this to deal with the fact we cant get viewposition (range of - inf to + inf) to be between 0 and 1 
+											//	perspective divide gets us a 0 to 1
 	gl_Position = uP * vViewPosition;
 }
