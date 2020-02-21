@@ -30,17 +30,37 @@
 //	3) copy attribute data from varying to respective render targets, 
 //		transforming data accordingly
 
+
+in vbLightingData {
+	vec4 vViewPosition;
+	vec4 vViewNormal;
+	vec4 vTexcoord;
+	vec4 vBiasedClipCoord;
+};
+
 layout (location = 1) out vec4 rtViewPosition;
 layout (location = 2) out vec4 rtViewNormal;
 layout (location = 3) out vec4 rtAtlasTexcoord;
+
 
 void main()
 {
 	//recieve data from vertex shader varying block, transform data correctly
 
 	// DUMMY OUTPUT: all fragments are OPAQUE RED, GREEN AND BLUE
-	rtViewPosition = vec4(1.0, 0.0, 0.0, 1.0);		//use biad clip coord perspective divide stuff, what removes bias and brings back to clip space is perspective divide 
+	
+	//this probably aint right but lets try it
+	vec4 viewPosFinal = vBiasedClipCoord / vBiasedClipCoord.w;
+
+	rtViewPosition = viewPosFinal;		//use biad clip coord perspective divide stuff, what removes bias and brings back to clip space is perspective divide 
 													// bias clip coord looks bluey purpley
-	rtViewNormal = vec4(0.0, 1.0, 0.0, 1.0);		// ( * 1/2 ) + 1/2   to get to 0 to 1,   to bring it back out of gbuffer do ( * 2) - 1
-	rtAtlasTexcoord = vec4(0.0, 0.0, 1.0, 1.0);		
+	
+	//convert -1 to 1 range into 0 to 1 range 
+	vec4 finalNorm = vec4((vViewNormal.xyz * vec3(0.5)) + vec3(0.5), 1.0);
+
+	rtViewNormal = finalNorm;		// ( * 1/2 ) + 1/2   to get to 0 to 1,   to bring it back out of gbuffer do ( * 2) - 1
+	
+	
+	//the goal is to make texcoord from 0 to 1, which i think is already the case
+	rtAtlasTexcoord = vTexcoord;		 	
 }
