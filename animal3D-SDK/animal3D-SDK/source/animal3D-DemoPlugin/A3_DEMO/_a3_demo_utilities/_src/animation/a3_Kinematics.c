@@ -45,8 +45,21 @@ extern inline a3i32 a3kinematicsSolveForwardPartial(const a3_HierarchyState *hie
 
 		for (i = firstIndex; i < end; ++i)
 		{
-			// ****TO-DO: implement forward kinematics algorithm
+			//SLIDE 33 ON SKELETON INTRO
 
+			if (hierarchyState->poseGroup->hierarchy->nodes[i].parentIndex < 0)		//this is just how to get node at indexes parent (here if true we get root)
+			{
+				hierarchyState->objectSpace->transform[i] = hierarchyState->localSpace->transform[i];		//convert global to local
+																											// figure out why you cant create local var for these
+			}
+			else
+			{
+				//this should be done by reference given the out var
+				a3real4x4Product(hierarchyState->objectSpace->transform[i].m,
+					hierarchyState->objectSpace->transform[hierarchyState->poseGroup->hierarchy->nodes[i].parentIndex].m, hierarchyState->localSpace->transform[i].m);
+			
+				//recursion problem (except i dont think we need to care because we go through this thing till our listed end?)
+			}
 		}
 
 		// done, return number of nodes updated

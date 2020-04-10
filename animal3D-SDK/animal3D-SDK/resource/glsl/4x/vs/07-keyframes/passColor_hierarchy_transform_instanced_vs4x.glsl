@@ -39,6 +39,16 @@
 //		(e.g. level in hierarchy from root node)
 //	4) copy selected color to outbound color
 
+struct a3_HierarchyNode {					//Found in a3_Hierarchy.h for details (line 56)
+	int name[32];
+	int index;
+	int parentIndex;
+};
+
+uniform ubHierarchy{						//Found in a3_DemoShaderProgram.h (line 121)
+	a3_HierarchyNode hNodes[MAX_NODES];
+};
+
 layout (location = 0) in vec4 aPosition;
 
 uniform ubTransformMVP {
@@ -53,6 +63,5 @@ void main()
 {
 	gl_Position = uMVP[gl_InstanceID] * aPosition;
 
-	// DUMMY OUTPUT: select first color
-	vColor = uColor[0];
+	vColor = uColor[hNodes[gl_InstanceID].index];	//through by index like on slides
 }
