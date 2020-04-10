@@ -50,7 +50,7 @@ extern inline a3i32 a3kinematicsSolveForwardPartial(const a3_HierarchyState *hie
 			if (hierarchyState->poseGroup->hierarchy->nodes[i].parentIndex < 0)		//this is just how to get node at indexes parent (here if true we get root)
 			{
 				hierarchyState->objectSpace->transform[i] = hierarchyState->localSpace->transform[i];		//convert global to local
-																											// figure out why you cant create local var for these
+																											//   figure out why you cant create local var for these
 			}
 			else
 			{

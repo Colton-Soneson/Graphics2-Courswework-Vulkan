@@ -40,7 +40,7 @@
 //	4) copy selected color to outbound color
 
 struct a3_HierarchyNode {					//Found in a3_Hierarchy.h for details (line 56)
-	int name[32];
+	int name[8];							//THIS IS NOT 32 IT IS 8, thats why the whole skeleton was red and missing segments (i found out by knowning color was wrong)
 	int index;
 	int parentIndex;
 };
